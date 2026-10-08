@@ -22,11 +22,32 @@ os.environ["LANGCHAIN_ENDPOINT"]   = os.getenv("LANGCHAIN_ENDPOINT", "https://ap
 # Đổi giá trị PROVIDER trong .env: openai | gemini | anthropic | ollama | openrouter
 PROVIDER = os.getenv("PROVIDER", "openai").lower()
 
+# Provider cho embeddings — mặc định giống PROVIDER.
+# "local": chạy FastEmbed trên CPU, miễn phí, không cần API key
+#          (dùng khi LLM là API OpenAI-compatible không có endpoint embeddings, vd Groq/Cerebras).
+EMBEDDING_PROVIDER    = os.getenv("EMBEDDING_PROVIDER", PROVIDER).lower()
+LOCAL_EMBEDDING_MODEL = os.getenv("LOCAL_EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
+
 # ── OpenAI ────────────────────────────────────────────────────────────────
 OPENAI_API_KEY         = os.getenv("OPENAI_API_KEY", "")
 OPENAI_BASE_URL        = os.getenv("OPENAI_BASE_URL", "")   # để trống nếu dùng OpenAI chính thức
 OPENAI_MODEL           = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+LLM_MAX_RETRIES        = int(os.getenv("LLM_MAX_RETRIES", "2"))   # tăng khi dùng free tier hay bị 429
+# Giới hạn token output mỗi request. Groq free có hạn mức output-token/phút (OTPM);
+# không đặt max_tokens thì Groq ước lượng output rất lớn và từ chối request ("Request too large").
+LLM_MAX_TOKENS         = int(os.getenv("LLM_MAX_TOKENS", "0")) or None
+
+# ── RAGAS judge (tùy chọn) ────────────────────────────────────────────────
+# Để trống → RAGAS dùng cùng provider/model với RAG.
+RAGAS_JUDGE_PROVIDER = os.getenv("RAGAS_JUDGE_PROVIDER", "").lower()   # vd "ollama"
+RAGAS_JUDGE_MODEL    = os.getenv("RAGAS_JUDGE_MODEL", "")
+# Ghi đè judge cho từng metric bằng "provider:model", vd RAGAS_JUDGE_CONTEXT_RECALL=openai:openai/gpt-oss-120b
+# (free tier giới hạn token/ngày theo từng model → chia metric cho nhiều model chạy song song)
+RAGAS_METRIC_JUDGES = {
+    name: os.getenv(f"RAGAS_JUDGE_{name.upper()}", "")
+    for name in ["faithfulness", "answer_relevancy", "context_recall", "context_precision"]
+}
 
 # ── Google Gemini ─────────────────────────────────────────────────────────
 GOOGLE_API_KEY          = os.getenv("GOOGLE_API_KEY", "")
@@ -41,6 +62,7 @@ ANTHROPIC_MODEL   = os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
 OLLAMA_BASE_URL         = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 OLLAMA_MODEL            = os.getenv("OLLAMA_MODEL", "llama3.1")
 OLLAMA_EMBEDDING_MODEL  = os.getenv("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
+OLLAMA_NUM_CTX          = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
 
 # ── OpenRouter ────────────────────────────────────────────────────────────
 OPENROUTER_API_KEY  = os.getenv("OPENROUTER_API_KEY", "")

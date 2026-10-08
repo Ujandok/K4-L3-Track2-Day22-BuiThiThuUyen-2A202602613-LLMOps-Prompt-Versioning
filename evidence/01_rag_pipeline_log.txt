@@ -1,0 +1,181 @@
+============================================================
+  Bước 1: LangSmith RAG Pipeline
+============================================================
+✅ Config OK  |  Provider: OPENAI  |  Project: day22-buithithuuyen
+📚 Đã chia thành 107 chunks
+🔨 Đang tạo FAISS index từ 107 chunks ...
+✅ FAISS vectorstore đã sẵn sàng.
+[01/50] Q: What are the three main types of machine learning?
+       A: Based on the provided context, the three main types of machine learning are:
+
+1.  **Supervised learn
+
+[02/50] Q: What is overfitting in machine learning?
+       A: Overfitting occurs when a machine learning model learns the training data too well, including the no
+
+[03/50] Q: Explain the bias-variance tradeoff.
+       A: Based on the provided context, the bias-variance tradeoff is a fundamental concept in machine learni
+
+[04/50] Q: How does regularization prevent overfitting?
+       A: Regularization prevents overfitting by discouraging overly complex models. It achieves this by addin
+
+[05/50] Q: What is cross-validation?
+       A: Cross-validation is a model evaluation technique that provides a more reliable estimate of performan
+
+[06/50] Q: What is backpropagation?
+       A: Backpropagation is the core algorithm used for training neural networks. It works by computing the g
+
+[07/50] Q: What are Convolutional Neural Networks primarily used for?
+       A: Based on the provided context, Convolutional Neural Networks (CNNs) are primarily used for processin
+
+[08/50] Q: How do LSTM networks address the vanishing gradient problem?
+       A: Based on the provided context, Long Short-Term Memory (LSTM) networks address the vanishing gradient
+
+[09/50] Q: What activation functions are commonly used in neural networ
+       A: Based on the provided context, the common activation functions used in neural networks are:
+
+*   **R
+
+[10/50] Q: What is the role of pooling layers in CNNs?
+       A: Based on the provided context, the role of pooling layers in Convolutional Neural Networks (CNNs) in
+
+[11/50] Q: What is the transformer architecture?
+       A: Based on the provided context, the transformer architecture is a model that revolutionized natural l
+
+[12/50] Q: What are word embeddings?
+       A: Word embeddings are dense vector representations of words that capture semantic meaning. They repres
+
+[13/50] Q: What is transfer learning in NLP?
+       A: Based on the provided context, transfer learning in NLP is the dominant paradigm that involves **pre
+
+[14/50] Q: How does BERT handle language understanding?
+       A: Based on the provided context, BERT handles language understanding through the following methods:
+
+*
+
+[15/50] Q: What is self-attention in transformers?
+       A: Self-attention is the core mechanism that gives transformers their power. It allows models to weigh 
+
+[16/50] Q: What is GPT and how is it trained?
+       A: Based on the provided context, here is an overview of GPT and its training process:
+
+**What is GPT?*
+
+[17/50] Q: What is instruction tuning?
+       A: Instruction tuning is a supervised fine-tuning technique used to make Large Language Models (LLMs) m
+
+[18/50] Q: What is RLHF?
+       A: Reinforcement Learning from Human Feedback (RLHF) is a technique used to align large language models
+
+[19/50] Q: What is chain-of-thought prompting?
+       A: Chain-of-thought prompting is a technique that improves Large Language Model (LLM) reasoning by elic
+
+[20/50] Q: What is the context length of GPT-4?
+       A: Based on the provided context, GPT-4 supports up to **128K tokens** of context.
+
+[21/50] Q: What is Retrieval-Augmented Generation?
+       A: Retrieval-Augmented Generation (RAG) is an approach that augments language models with external know
+
+[22/50] Q: What are the main components of a RAG pipeline?
+       A: Based on the provided context, a RAG (Retrieval Augmented Generation) pipeline consists of two prima
+
+[23/50] Q: What is dense retrieval?
+       A: Dense retrieval is a neural approach to document retrieval that outperforms traditional keyword matc
+
+[24/50] Q: Why is chunking strategy important in RAG?
+       A: Chunking strategy is important in RAG because it significantly impacts the quality of the pipeline, 
+
+[25/50] Q: What advanced RAG techniques exist beyond basic retrieval?
+       A: Based on the provided context, advanced RAG techniques that go beyond simple retrieval include:
+
+*  
+
+[26/50] Q: What are vector databases used for?
+       A: Based on the provided context, vector databases are used for:
+
+*   **Storing and querying high-dimen
+
+[27/50] Q: What is FAISS?
+       A: FAISS (Facebook AI Similarity Search) is a widely used library developed by Meta AI Research for eff
+
+[28/50] Q: How do text embeddings capture semantic meaning?
+       A: Based on the provided context, text embeddings capture semantic meaning by converting text into nume
+
+[29/50] Q: What is HNSW?
+       A: HNSW (Hierarchical Navigable Small World) is a graph-based algorithm designed for approximate neares
+
+[30/50] Q: What is hybrid search in vector databases?
+       A: Based on the provided context, **hybrid search** is a retrieval method that combines the strengths o
+
+[31/50] Q: What is LangChain?
+       A: LangChain is an open-source framework designed to simplify the building of applications using large 
+
+[32/50] Q: What is LangChain Expression Language (LCEL)?
+       A: LangChain Expression Language (LCEL) is a declarative syntax used for composing LangChain components
+
+[33/50] Q: What is LangGraph?
+       A: LangGraph is an extension of LangChain designed for building stateful, multi-actor applications. It 
+
+[34/50] Q: What memory types does LangChain support?
+       A: Based on the provided context, LangChain supports the following memory types:
+
+*   **ConversationBuf
+
+[35/50] Q: What are LangChain retrievers?
+       A: LangChain retrievers are components designed to fetch relevant documents from a data source based on
+
+[36/50] Q: What is LangSmith?
+       A: LangSmith is a developer platform designed for building production-grade LLM applications. Developed
+
+[37/50] Q: What information do LangSmith traces capture?
+       A: Based on the provided context, LangSmith traces capture the following information:
+
+*   **General Co
+
+[38/50] Q: What is the LangSmith Prompt Hub?
+       A: The LangSmith Prompt Hub is a centralized repository designed for managing prompt templates. It allo
+
+[39/50] Q: How does LangSmith help monitor production LLM applications?
+       A: LangSmith helps monitor production LLM applications by providing comprehensive visibility and detail
+
+[40/50] Q: What are LangSmith datasets used for?
+       A: LangSmith datasets are used for **systematic evaluation** of LLM applications. Specifically, they ar
+
+[41/50] Q: What is RAGAS?
+       A: RAGAS (Retrieval Augmented Generation Assessment) is an open-source framework specifically designed 
+
+[42/50] Q: How does RAGAS compute faithfulness?
+       A: Based on the provided context, RAGAS computes faithfulness through the following steps:
+
+1.  **Decom
+
+[43/50] Q: What is answer relevancy in RAGAS?
+       A: Answer relevancy in RAGAS measures how well the generated answer addresses the original question. It
+
+[44/50] Q: What is context recall in RAGAS?
+       A: In RAGAS, **context recall** measures how thoroughly the retrieved passages cover the information ne
+
+[45/50] Q: What inputs does RAGAS evaluation require?
+       A: Based on the provided context, RAGAS evaluation requires the following specific inputs:
+
+*   **User 
+
+[46/50] Q: What is Guardrails AI?
+       A: Guardrails AI is an open-source framework designed to add safety and validation layers to Large Lang
+
+[47/50] Q: What is PII and why is it important to detect in LLM respons
+       A: Based on the provided context, **PII (Personally Identifiable Information)** refers to data that can
+
+[48/50] Q: What does structured output validation ensure?
+       A: Structured output validation ensures that LLM responses conform to expected data formats or schemas,
+
+[49/50] Q: What is Constitutional AI?
+       A: Constitutional AI is an approach developed by Anthropic for aligning language models with ethical pr
+
+[50/50] Q: What are common AI safety concerns with LLMs?
+       A: Based on the provided context, common AI safety concerns with Large Language Models (LLMs) include:
+
+
+
+✅ 50 traces đã gửi lên LangSmith project 'day22-buithithuuyen'
+   Mở https://smith.langchain.com để xem traces.

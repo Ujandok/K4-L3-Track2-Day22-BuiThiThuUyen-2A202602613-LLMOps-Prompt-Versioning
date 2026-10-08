@@ -12,11 +12,33 @@ Cách dùng:
 import sys
 from pathlib import Path
 
+from langchain_core.embeddings import Embeddings
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 import config
 
 
-def get_llm(provider: str = None, temperature: float = 0.0):
+class LocalEmbeddings(Embeddings):
+    """
+    Embeddings chạy trên máy bằng FastEmbed (ONNX, CPU) — miễn phí, không cần API key.
+
+    Bọc FastEmbedEmbeddings vì RAGAS ghi log `embeddings.model` và yêu cầu kiểu str,
+    trong khi FastEmbedEmbeddings.model là object TextEmbedding → ValidationError.
+    """
+
+    def __init__(self, model_name: str):
+        from langchain_community.embeddings import FastEmbedEmbeddings
+        self.model  = model_name
+        self._inner = FastEmbedEmbeddings(model_name=model_name)   # tải model 1 lần rồi cache
+
+    def embed_documents(self, texts: list) -> list:
+        return self._inner.embed_documents(texts)
+
+    def embed_query(self, text: str) -> list:
+        return self._inner.embed_query(text)
+
+
+def get_llm(provider: str = None, temperature: float = 0.0, model: str = None):
     """
     Trả về BaseChatModel tương ứng với provider được chọn.
 
@@ -24,6 +46,8 @@ def get_llm(provider: str = None, temperature: float = 0.0):
         provider    : "openai" | "gemini" | "anthropic" | "ollama" | "openrouter"
                       Mặc định: đọc PROVIDER từ .env (config.PROVIDER)
         temperature : độ ngẫu nhiên (0.0 = tất định, 1.0 = sáng tạo)
+        model       : ghi đè tên model (provider "openai" hoặc "ollama"),
+                      vd dùng model khác làm RAGAS judge
 
     Returns:
         BaseChatModel instance sẵn sàng sử dụng
@@ -36,13 +60,20 @@ def get_llm(provider: str = None, temperature: float = 0.0):
 
     if provider == "openai":
         from langchain_openai import ChatOpenAI
+        model_name = model or config.OPENAI_MODEL
         kwargs = {
-            "model": config.OPENAI_MODEL,
+            "model": model_name,
             "api_key": config.OPENAI_API_KEY,
             "temperature": temperature,
+            "max_retries": config.LLM_MAX_RETRIES,   # client tự chờ theo retry-after khi gặp 429
         }
         if config.OPENAI_BASE_URL:
             kwargs["base_url"] = config.OPENAI_BASE_URL
+        if config.LLM_MAX_TOKENS:
+            kwargs["max_tokens"] = config.LLM_MAX_TOKENS
+        if "gpt-oss" in model_name:
+            # gpt-oss là reasoning model: "low" giữ token suy luận ít → đỡ tốn quota token/phút
+            kwargs["reasoning_effort"] = "low"
         return ChatOpenAI(**kwargs)
 
     elif provider == "gemini":
@@ -64,9 +95,11 @@ def get_llm(provider: str = None, temperature: float = 0.0):
     elif provider == "ollama":
         from langchain_ollama import ChatOllama
         return ChatOllama(
-            model=config.OLLAMA_MODEL,
+            model=model or config.OLLAMA_MODEL,
             base_url=config.OLLAMA_BASE_URL,
             temperature=temperature,
+            num_ctx=config.OLLAMA_NUM_CTX,       # prompt RAGAS có few-shot dài ~1.5k token
+            num_predict=config.LLM_MAX_TOKENS,   # chặn output chạy quá dài
         )
 
     elif provider == "openrouter":
@@ -97,13 +130,16 @@ def get_embeddings(provider: str = None):
           Cài đặt: ollama pull nomic-embed-text
 
     Args:
-        provider: "openai" | "gemini" | "anthropic" | "ollama" | "openrouter"
-                  Mặc định: đọc PROVIDER từ .env
+        provider: "openai" | "gemini" | "anthropic" | "ollama" | "openrouter" | "local"
+                  Mặc định: đọc EMBEDDING_PROVIDER từ .env (fallback về PROVIDER)
 
     Returns:
         Embeddings instance sẵn sàng sử dụng
     """
-    provider = (provider or config.PROVIDER).lower()
+    provider = (provider or config.EMBEDDING_PROVIDER).lower()
+
+    if provider == "local":
+        return LocalEmbeddings(config.LOCAL_EMBEDDING_MODEL)
 
     if provider in ("openai", "openrouter"):
         from langchain_openai import OpenAIEmbeddings

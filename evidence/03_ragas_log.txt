@@ -1,0 +1,45 @@
+============================================================
+  Bước 3: RAGAS Evaluation
+============================================================
+✅ Config OK  |  Provider: OPENAI  |  Project: day22-buithithuuyen
+🔨 Đang tạo FAISS index từ 107 chunks ...
+✅ FAISS vectorstore đã sẵn sàng.
+
+♻️  Dùng lại 50 kết quả RAG v1 từ rag_outputs_v1.json
+
+♻️  Dùng lại 50 kết quả RAG v2 từ rag_outputs_v2.json
+
+📐 Đang đánh giá RAGAS cho prompt v1 ... (vui lòng chờ ~5-10 phút)
+  ⚖️  faithfulness         ← ollama:qwen2.5:3b
+  ⚖️  answer_relevancy     ← openai:openai/gpt-oss-20b
+  ⚖️  context_recall       ← openai:openai/gpt-oss-120b
+  ⚖️  context_precision    ← ollama:qwen2.5:3b
+
+📊 Kết quả RAGAS — Prompt V1:
+  faithfulness                  : 0.9057 ⭐
+  answer_relevancy              : 0.9343
+  context_recall                : 1.0000
+  context_precision             : 0.9617
+
+📐 Đang đánh giá RAGAS cho prompt v2 ... (vui lòng chờ ~5-10 phút)
+  ⚖️  faithfulness         ← ollama:qwen2.5:3b
+  ⚖️  answer_relevancy     ← openai:openai/gpt-oss-20b
+  ⚖️  context_recall       ← openai:openai/gpt-oss-120b
+  ⚖️  context_precision    ← ollama:qwen2.5:3b
+
+📊 Kết quả RAGAS — Prompt V2:
+  faithfulness                  : 0.9066 ⭐
+  answer_relevancy              : 0.9141
+  context_recall                : 1.0000
+  context_precision             : 0.9617
+
+=================================================================
+  Metric                                V1        V2  Winner
+=================================================================
+  faithfulness                      0.9057    0.9066  ← V2
+  answer_relevancy                  0.9343    0.9141  ← V1
+  context_recall                    1.0000    1.0000  ← V2
+  context_precision                 0.9617    0.9617  ← V1
+
+✅ Đạt mục tiêu: faithfulness = 0.9066 ≥ 0.8
+💾 Đã lưu báo cáo vào E:\8.10\K4-L3-Track2-Day22-BuiThiThuUyen-2A202602613-LLMOps-Prompt-Versioning\data\ragas_report.json
